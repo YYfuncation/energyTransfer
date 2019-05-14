@@ -7,17 +7,179 @@
 //
 
 #import "AppDelegate.h"
+#import "NJLoginViewController.h"
+#import "MainNavigationViewController.h"
+#import "NJTabBarViewController.h"
+#import "NJHomeViewController.h"
+#import "NJMineViewController.h"
+#import "NJShopCarViewController.h"
+#import "NJClassifyViewController.h"
+#import "NJMarketViewController.h"
+#import "NJLoginViewController.h"
+#import "TSConst.h"
+#import "NJLoginManager.h"
+#import "MBProgressHUD+LYHud.h"
 
-@interface AppDelegate ()
-
+@interface AppDelegate ()<UITabBarControllerDelegate>
 @end
 
 @implementation AppDelegate
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    
     // Override point for customization after application launch.
+    // AppDelegate 进行全局设置
+    BOOL isLogin = [[NSUserDefaults standardUserDefaults] boolForKey:kLoginSuccess];
+    if (isLogin) {
+        NSString *name = [[NSUserDefaults standardUserDefaults] valueForKey:kUserName];
+        NSString *passWord = [[NSUserDefaults standardUserDefaults] valueForKey:kPassword];
+        if (name == nil) {
+            name = @"";
+            passWord = @"";
+            [NJLoginManager loginWithusername:name password:passWord successHandler:^(id object) {
+            } errorHandler:^(NSString *errorString) {
+            }];
+        }else{
+            [NJLoginManager loginWithusername:name password:passWord successHandler:^(id object) {
+            } errorHandler:^(NSString *errorString) {
+            }];
+        }
+        
+    }
+    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
+    
+    NJHomeViewController *homeVC = [[NJHomeViewController alloc] init];
+    MainNavigationViewController *homeNav = [[MainNavigationViewController alloc] initWithRootViewController:homeVC];
+    homeNav.tabBarItem.image = [UIImage imageNamed:@"home"];
+    homeVC.title = @"首页";
+    
+    NJMarketViewController *marketVC = [[NJMarketViewController alloc] init];
+    MainNavigationViewController *marketNav = [[MainNavigationViewController alloc] initWithRootViewController:marketVC];
+    marketNav.tabBarItem.image = [UIImage imageNamed:@"market"];
+    marketVC.title = @"行情";
+    
+    NJClassifyViewController *classifyVC = [[NJClassifyViewController alloc] init];
+    MainNavigationViewController *classifyNav = [[MainNavigationViewController alloc] initWithRootViewController:classifyVC];
+    classifyNav.tabBarItem.image = [UIImage imageNamed:@"classify"];
+    classifyVC.title = @"选油";
+    
+    NJShopCarViewController *shopCarVC = [[NJShopCarViewController alloc] init];
+    MainNavigationViewController *shopCarNav = [[MainNavigationViewController alloc] initWithRootViewController:shopCarVC];
+    shopCarNav.tabBarItem.image = [UIImage imageNamed:@"shopCar"];
+    shopCarVC.title = @"购物车";
+    
+//    NJMineViewController *mineVC = [[NJMineViewController alloc] init];
+//    MainNavigationViewController *mineNav = [[MainNavigationViewController alloc] initWithRootViewController:mineVC];
+//    mineNav.tabBarItem.image = [UIImage imageNamed:@"mine"];
+//    mineVC.title = @"会员中心";
+    MainNavigationViewController *mineNav = nil;
+    if (isLogin) {
+        NJMineViewController *mineVC = [[NJMineViewController alloc] init];
+        mineNav = [[MainNavigationViewController alloc] initWithRootViewController:mineVC];
+        mineNav.tabBarItem.image = [UIImage imageNamed:@"mine"];
+        mineVC.title = @"会员中心";
+    }else{
+        NJLoginViewController *mineVC = [[NJLoginViewController alloc]init];
+        mineNav = [[MainNavigationViewController alloc] initWithRootViewController:mineVC];
+        mineNav.tabBarItem.image = [UIImage imageNamed:@"mine"];
+        mineVC.title = @"会员中心";
+    }
+    
+    
+    NJTabBarViewController *tabVC = [[NJTabBarViewController alloc] init];
+    tabVC.delegate = self;
+    [tabVC setViewControllers:@[homeNav,marketNav,classifyNav,shopCarNav,mineNav]];
+    tabVC.tabBar.tintColor = [UIColor orangeColor];
+    tabVC.tabBar.backgroundImage = [self createImageWithColor:[UIColor colorWithRed:45.0f/255.0f green:45.0f/255.0f blue:45.0f/255.0f alpha:1]];
+    
+    self.window.rootViewController = tabVC;
     return YES;
+    
+}
+
+
+//- (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController{
+//
+//        BOOL isLogin = [[NSUserDefaults standardUserDefaults] boolForKey:kLoginSuccess];
+//        if ([viewController.tabBarItem.title isEqualToString:@"会员中心"]) {
+//            if (isLogin) {
+//
+//                return YES;
+//            }else{
+//                NJLoginViewController *loginVC = [[NJLoginViewController alloc]init];
+//                NJTabBarViewController *tbc = (NJTabBarViewController *)_window.rootViewController;
+//                MainNavigationViewController *nav = tbc.viewControllers[tbc.selectedIndex];
+//                loginVC.hidesBottomBarWhenPushed = NO;
+//                [nav pushViewController:loginVC animated:YES];
+//
+//                return NO;
+//            }
+//        }
+//    return YES;
+//}
+
+//获取当前页
++ (UIViewController *)getCurrentVC {
+    // 获取presentVC
+    UIViewController *appRootVC = [UIApplication sharedApplication].keyWindow.rootViewController;
+    UIViewController *topVC = appRootVC;
+    
+    while (topVC.presentedViewController) {
+        topVC = topVC.presentedViewController;
+    }
+    if ([topVC isKindOfClass:[UINavigationController class]]) {
+        return [(UINavigationController *)topVC topViewController];
+    }
+    if ([topVC isKindOfClass:[UIViewController class]]) {
+        return topVC;
+    }
+    return nil;
+    // 获取push当前页
+    UIViewController *result = nil;
+    
+    UIWindow *window = [[UIApplication sharedApplication] keyWindow];
+    if (window.windowLevel != UIWindowLevelNormal) {
+        NSArray *windows = [[UIApplication sharedApplication] windows];
+        for(UIWindow *tmpWin in windows) {
+            if (tmpWin.windowLevel == UIWindowLevelNormal) {
+                window = tmpWin;
+                break;
+            }
+        }
+    }
+    
+    UIView *frontView = [[window subviews] objectAtIndex:0];
+    id nextResponder = [frontView nextResponder];
+    
+    if ([nextResponder isKindOfClass:[UIViewController class]])
+        result = nextResponder;
+    else
+        result = window.rootViewController;
+    
+    return result;
+}
+
+- (UIImage *) createImageWithColor: (UIColor *) color
+
+{
+    
+    CGRect rect = CGRectMake(0.0f,0.0f,1.0f,1.0f);
+    
+    UIGraphicsBeginImageContext(rect.size);
+    
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    
+    CGContextSetFillColorWithColor(context, [color CGColor]);
+    
+    CGContextFillRect(context, rect);
+    
+    UIImage *myImage = UIGraphicsGetImageFromCurrentImageContext();
+    
+    UIGraphicsEndImageContext();
+    
+    return myImage;
+    
 }
 
 

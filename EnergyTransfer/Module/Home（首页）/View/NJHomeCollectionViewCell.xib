@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="NJHomeCollectionViewCell" id="gTV-IL-0wX" customClass="NJHomeCollectionViewCell">
+            <rect key="frame" x="0.0" y="0.0" width="125" height="125"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="125" height="125"/>
+                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="￥5880.00" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OVt-1z-iZ5">
+                        <rect key="frame" x="30.5" y="105.5" width="64.5" height="14.5"/>
+                        <fontDescription key="fontDescription" type="boldSystem" pointSize="12"/>
+                        <color key="textColor" red="1" green="0.14913141730000001" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_oildrum" translatesAutoresizingMaskIntoConstraints="NO" id="F5P-eA-OCL">
+                        <rect key="frame" x="37.5" y="28" width="50" height="72.5"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="50" id="kbv-aa-3Dl"/>
+                        </constraints>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Cqw-04-PHK">
+                        <rect key="frame" x="43.5" y="5" width="37.5" height="18"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                        <color key="textColor" red="0.011531722729999999" green="0.69804900879999998" blue="0.94557672739999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+            </view>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="F5P-eA-OCL" firstAttribute="centerX" secondItem="gTV-IL-0wX" secondAttribute="centerX" id="2Cu-9X-ney"/>
+                <constraint firstItem="Cqw-04-PHK" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="5" id="2n1-22-qmR"/>
+                <constraint firstItem="Cqw-04-PHK" firstAttribute="centerX" secondItem="gTV-IL-0wX" secondAttribute="centerX" id="BlD-2S-uWt"/>
+                <constraint firstItem="OVt-1z-iZ5" firstAttribute="top" secondItem="F5P-eA-OCL" secondAttribute="bottom" constant="5" id="Vcc-fh-107"/>
+                <constraint firstAttribute="bottom" secondItem="OVt-1z-iZ5" secondAttribute="bottom" constant="5" id="olH-zX-xVh"/>
+                <constraint firstItem="OVt-1z-iZ5" firstAttribute="centerX" secondItem="gTV-IL-0wX" secondAttribute="centerX" id="ucM-pM-Fnv"/>
+                <constraint firstItem="F5P-eA-OCL" firstAttribute="top" secondItem="Cqw-04-PHK" secondAttribute="bottom" constant="5" id="yG2-7F-Zqf"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="SEy-5g-ep8"/>
+            <size key="customSize" width="125" height="123"/>
+            <connections>
+                <outlet property="priceLabel" destination="OVt-1z-iZ5" id="7iG-Wg-vX0"/>
+                <outlet property="titleName" destination="Cqw-04-PHK" id="ijb-XT-k3J"/>
+            </connections>
+            <point key="canvasLocation" x="69.5" y="112.5"/>
+        </collectionViewCell>
+    </objects>
+    <resources>
+        <image name="icon_oildrum" width="48" height="65"/>
+    </resources>
+</document>
